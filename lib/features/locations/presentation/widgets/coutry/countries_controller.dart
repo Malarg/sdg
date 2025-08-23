@@ -6,16 +6,16 @@ import 'package:sdg/features/locations/di/locations_providers.dart';
 import 'package:sdg/features/locations/domain/entities/coutry.dart';
 
 final _provider =
-    NotifierProvider<SelectCountryController, SdgState<List<Country>>>(
-      () => SelectCountryController(),
+    NotifierProvider<CountriesController, SdgState<List<Country>>>(
+      () => CountriesController(),
     );
 
-class SelectCountryController extends Notifier<SdgState<List<Country>>> {
+class CountriesController extends Notifier<SdgState<List<Country>>> {
   static final provider = _provider;
 
   @override
   SdgState<List<Country>> build() {
-    getCountries();
+    Future.delayed(Duration.zero, getCountries);
     return SdgStateInitial();
   }
 
