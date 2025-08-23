@@ -9,10 +9,10 @@ class LocationsRepositoryWeb implements LocationsRepository {
   LocationsRepositoryWeb({required LocationsApi api}) : _api = api;
 
   @override
-  Future<Country> getCountries() async {
+  Future<List<Country>> getCountries() async {
     try {
       final countriesDto = await _api.getCountries();
-      return CountryMapper.fromDto(countriesDto.first);
+      return countriesDto.map((dto) => CountryMapper.fromDto(dto)).toList();
     } catch (e, stacktrace) {
       throw Error.throwWithStackTrace(
         'Unexpected error while fetching countries: $e',
