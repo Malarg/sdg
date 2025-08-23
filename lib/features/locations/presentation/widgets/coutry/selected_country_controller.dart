@@ -1,6 +1,6 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:sdg/features/common/presentation/sdg_state.dart';
-import 'package:sdg/features/locations/domain/entities/coutry.dart';
+import 'package:sdg/features/locations/domain/entities/country.dart';
 import 'package:sdg/features/locations/presentation/widgets/coutry/countries_controller.dart';
 
 final _provider = NotifierProvider<SelectedCountryController, Country?>(

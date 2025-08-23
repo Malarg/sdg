@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sdg/features/common/presentation/sdg_state.dart';
 import 'package:sdg/features/common/presentation/widgets/sdg_dropdown_button.dart';
-import 'package:sdg/features/locations/domain/entities/coutry.dart';
 import 'package:sdg/features/locations/presentation/entities/country_dropdown_item.dart';
 import 'package:sdg/features/locations/presentation/widgets/coutry/countries_controller.dart';
 import 'package:sdg/features/locations/presentation/widgets/coutry/selected_country_controller.dart';
@@ -25,7 +23,7 @@ class SelectCountryWidget extends ConsumerWidget {
     return SdgDropdownButton<CountryDropdownItem>(
       items: dropdownItems,
       selectedItem: selectedDropdownItem,
-      state: _buildDropdownState(countriesState),
+      state: SdgDropdownState.fromSdgState(countriesState),
       errorButtonText: 'Reload',
       onErrorButtonPressed: () => _handleErrorButtonPressed(ref),
       onItemSelected: (CountryDropdownItem? item) {
@@ -43,15 +41,6 @@ class SelectCountryWidget extends ConsumerWidget {
     } else {
       selectedCountryController.clearSelection();
     }
-  }
-
-  SdgDropdownState _buildDropdownState(SdgState<List<Country>> countriesState) {
-    return switch (countriesState) {
-      SdgStateInitial() => SdgDropdownState.inactive,
-      SdgStateLoading() => SdgDropdownState.loading,
-      SdgStateIdle() => SdgDropdownState.active,
-      SdgStateError() => SdgDropdownState.error,
-    };
   }
 
   void _handleErrorButtonPressed(WidgetRef ref) {

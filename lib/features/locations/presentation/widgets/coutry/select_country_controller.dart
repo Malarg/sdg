@@ -15,7 +15,7 @@ class CountriesController extends Notifier<SdgState<List<Country>>> {
 
   @override
   SdgState<List<Country>> build() {
-    Future.delayed(Duration.zero, getCountries);
+    getCountries();
     return SdgStateInitial();
   }
 

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:sdg/api/locations/dto/country_state_dto.dart';
 import 'dto/country_dto.dart';
 
 part 'locations_api.g.dart';
@@ -12,4 +13,7 @@ abstract class LocationsApi {
 
   @GET('$_prefix/countries')
   Future<List<CountryDto>> getCountries();
+
+  @GET('$_prefix/countries/{countryId}/states')
+  Future<List<CountryStateDto>> getCountryStates(@Path('countryId') String countryId);
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sdg/features/locations/presentation/locations_screen.dart';
-import 'package:sdg/features/locations/presentation/widgets/coutry/select_country_widget.dart';
 
 void main() {
   runApp(const MainApp());
