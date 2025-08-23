@@ -6,11 +6,11 @@ import 'package:sdg/features/locations/di/locations_providers.dart';
 import 'package:sdg/features/locations/domain/entities/country.dart';
 
 final _provider =
-    NotifierProvider<CountriesController, SdgState<List<Country>>>(
+    NotifierProvider.autoDispose<CountriesController, SdgState<List<Country>>>(
       () => CountriesController(),
     );
 
-class CountriesController extends Notifier<SdgState<List<Country>>> {
+class CountriesController extends AutoDisposeNotifier<SdgState<List<Country>>> {
   static final provider = _provider;
 
   @override

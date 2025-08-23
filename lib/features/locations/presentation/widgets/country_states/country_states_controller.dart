@@ -7,11 +7,11 @@ import 'package:sdg/features/locations/domain/entities/country_state.dart';
 import 'package:sdg/features/locations/presentation/widgets/coutry/selected_country_controller.dart';
 
 final _provider =
-    NotifierProvider<CountryStatesController, SdgState<List<CountryState>>>(
+    NotifierProvider.autoDispose<CountryStatesController, SdgState<List<CountryState>>>(
       () => CountryStatesController(),
     );
 
-class CountryStatesController extends Notifier<SdgState<List<CountryState>>> {
+class CountryStatesController extends AutoDisposeNotifier<SdgState<List<CountryState>>> {
   static final provider = _provider;
 
   @override

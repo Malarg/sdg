@@ -3,11 +3,11 @@ import 'package:sdg/features/common/presentation/sdg_state.dart';
 import 'package:sdg/features/locations/domain/entities/country_state.dart';
 import 'package:sdg/features/locations/presentation/widgets/country_states/country_states_controller.dart';
 
-final _provider = NotifierProvider<SelectedCountryStateController, CountryState?>(
+final _provider = NotifierProvider.autoDispose<SelectedCountryStateController, CountryState?>(
   () => SelectedCountryStateController(),
 );
 
-class SelectedCountryStateController extends Notifier<CountryState?> {
+class SelectedCountryStateController extends AutoDisposeNotifier<CountryState?> {
   static final provider = _provider;
 
   @override
