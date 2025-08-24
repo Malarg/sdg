@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sdg/features/locations/presentation/screens/locations/locations_controller.dart';
-import 'package:sdg/features/locations/presentation/screens/locations/locations_screen_state.dart';
+import 'package:sdg/features/common/presentation/validation/sdg_validation_common_error.dart';
+import 'package:sdg/features/common/presentation/validation/sdg_validation_state.dart';
+import 'package:sdg/features/locations/presentation/screens/locations/locations_screen_validator.dart';
 import 'package:sdg/features/locations/presentation/widgets/country_states/select_country_state_widget.dart';
-import 'package:sdg/features/locations/presentation/widgets/coutry/select_country_widget.dart';
+import 'package:sdg/features/locations/presentation/widgets/country/select_country_widget.dart';
 
 class LocationsScreen extends ConsumerWidget {
   const LocationsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(LocationsController.provider, (previous, next) {
-      if (next is LocationsScreenStateValidationError) {
-        final text = switch (next.error) {
-          LocationsScreenValidationError.noCountrySelected =>
-            'Select a country first',
-          LocationsScreenValidationError.noCountryStateSelected =>
-            'Select a country state first',
+    ref.listen(LocationsScreenValidator.provider, (previous, next) {
+      if (next is SdgValidationStateError) {
+        final text = switch ((next as SdgValidationStateError).error) {
+          SdgValidationCommonError.invalid => 'Fix errors first',
+          _ => null,
         };
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(text)));
+        if (text != null) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(text)));
+        }
       }
-      if (next is LocationsScreenStateValidationSuccess) {
+      if (next is SdgValidationStateSuccess) {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text('Success')));
@@ -31,7 +32,7 @@ class LocationsScreen extends ConsumerWidget {
 
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: AppBar(title: Text('Social development group')),
+      appBar: AppBar(title: Text('Social discovery group')),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -47,9 +48,11 @@ class LocationsScreen extends ConsumerWidget {
               Expanded(child: SizedBox.shrink()),
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: ref
-                    .read(LocationsController.provider.notifier)
-                    .continueToNextStep,
+                onPressed: () {
+                  ref
+                      .read(LocationsScreenValidator.provider.notifier)
+                      .validate(value: null);
+                },
                 child: Text('Continue'),
               ),
             ],

@@ -6,13 +6,13 @@ enum SdgDropdownState {
   inactive,
   active,
   loading,
-  error;
+  hasNotValues;
 
   static SdgDropdownState fromSdgState(SdgState state) {
     return switch (state) {
       SdgStateInitial() => SdgDropdownState.inactive,
       SdgStateLoading() => SdgDropdownState.loading,
-      SdgStateError() => SdgDropdownState.error,
+      SdgStateError() => SdgDropdownState.hasNotValues,
       SdgStateIdle() => SdgDropdownState.active,
     };
   }
@@ -26,6 +26,7 @@ class SdgDropdownButton<T extends SdgDropdownItemMixin>
   final VoidCallback onErrorButtonPressed;
   final String errorButtonText;
   final SdgDropdownState state;
+  final String? errorText;
 
   const SdgDropdownButton({
     super.key,
@@ -35,23 +36,23 @@ class SdgDropdownButton<T extends SdgDropdownItemMixin>
     required this.state,
     required this.onErrorButtonPressed,
     required this.errorButtonText,
+    this.errorText,
   });
 
   @override
   Widget build(BuildContext context) {
     return switch (state) {
-      SdgDropdownState.active => DropdownButton<T>(
-        value: selectedItem,
-        items: _buildItems(),
+      SdgDropdownState.active || SdgDropdownState.inactive => DropdownButtonFormField<T>(
+        initialValue: state == SdgDropdownState.active ? selectedItem : null,
+        items: state == SdgDropdownState.active ? _buildItems() : null,
         onChanged: onItemSelected,
         isExpanded: true,
         icon: Icon(Icons.keyboard_arrow_down),
         iconSize: 24,
-        underline: Container(height: 1, color: Colors.grey),
+        forceErrorText: errorText,
       ),
-      SdgDropdownState.inactive => _InactiveDropdown(),
       SdgDropdownState.loading => Center(child: CircularProgressIndicator()),
-      SdgDropdownState.error => TextButton(
+      SdgDropdownState.hasNotValues => TextButton(
         onPressed: onErrorButtonPressed,
         child: Text(errorButtonText),
       ),
@@ -67,35 +68,5 @@ class SdgDropdownButton<T extends SdgDropdownItemMixin>
           ),
         )
         .toList();
-  }
-}
-
-/// This is required, because default dropdown looks ugly when it's inactive.
-class _InactiveDropdown extends StatelessWidget {
-  const _InactiveDropdown();
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: Colors.grey.shade400, width: 1),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 6),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(child: SizedBox.shrink()),
-            Icon(
-              Icons.keyboard_arrow_down,
-              color: Colors.grey.shade400,
-              size: 24,
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

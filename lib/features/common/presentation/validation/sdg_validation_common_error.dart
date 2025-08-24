@@ -1,0 +1,1 @@
+enum SdgValidationCommonError { empty, invalid }

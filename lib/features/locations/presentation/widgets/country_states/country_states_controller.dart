@@ -4,7 +4,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:sdg/features/common/presentation/sdg_state.dart';
 import 'package:sdg/features/locations/di/locations_providers.dart';
 import 'package:sdg/features/locations/domain/entities/country_state.dart';
-import 'package:sdg/features/locations/presentation/widgets/coutry/selected_country_controller.dart';
+import 'package:sdg/features/locations/presentation/widgets/country/selected_country_controller.dart';
 
 final _provider =
     NotifierProvider.autoDispose<CountryStatesController, SdgState<List<CountryState>>>(

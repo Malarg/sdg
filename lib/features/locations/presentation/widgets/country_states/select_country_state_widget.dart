@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sdg/features/common/presentation/validation/sdg_validation_state.dart';
 import 'package:sdg/features/common/presentation/widgets/sdg_dropdown_button.dart';
 import 'package:sdg/features/locations/presentation/entities/country_state_dropdown_item.dart';
 import 'package:sdg/features/locations/presentation/widgets/country_states/country_states_controller.dart';
 import 'package:sdg/features/locations/presentation/widgets/country_states/selected_country_state_controller.dart';
-import 'package:sdg/features/locations/presentation/widgets/coutry/selected_country_controller.dart';
+import 'package:sdg/features/locations/presentation/widgets/country_states/selected_country_state_validator.dart';
+import 'package:sdg/features/locations/presentation/widgets/country/selected_country_controller.dart';
 
 class SelectCountryStateWidget extends ConsumerWidget {
   const SelectCountryStateWidget({super.key});
@@ -26,12 +28,24 @@ class SelectCountryStateWidget extends ConsumerWidget {
         ? CountryStateDropdownItem.fromCountryState(selectedCountryState)
         : null;
 
+    final validationState = ref.watch(SelectedCountryStateValidator.provider);
+    final errorText = switch (validationState) {
+      SdgValidationStateError(error: final countryError) =>
+        switch (countryError) {
+          SelectedCountryStateValidationError.empty => 'Select a country state',
+          SelectedCountryStateValidationError.countryNotSelected =>
+            'Select a country first',
+        },
+      _ => null,
+    };
+
     return SdgDropdownButton<CountryStateDropdownItem>(
       items: dropdownItems,
       selectedItem: selectedDropdownItem,
       state: SdgDropdownState.fromSdgState(countryStatesState),
       errorButtonText: 'Reload',
       onErrorButtonPressed: () => _handleErrorButtonPressed(ref),
+      errorText: errorText,
       onItemSelected: (CountryStateDropdownItem? item) {
         _onItemSelected(item, ref);
       },

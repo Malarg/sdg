@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sdg/features/common/presentation/validation/sdg_validation_common_error.dart';
+import 'package:sdg/features/common/presentation/validation/sdg_validation_state.dart';
 import 'package:sdg/features/common/presentation/widgets/sdg_dropdown_button.dart';
 import 'package:sdg/features/locations/presentation/entities/country_dropdown_item.dart';
-import 'package:sdg/features/locations/presentation/widgets/coutry/countries_controller.dart';
-import 'package:sdg/features/locations/presentation/widgets/coutry/selected_country_controller.dart';
+import 'package:sdg/features/locations/presentation/widgets/country/countries_controller.dart';
+import 'package:sdg/features/locations/presentation/widgets/country/selected_country_controller.dart';
+import 'package:sdg/features/locations/presentation/widgets/country/selected_country_validator.dart';
 
 class SelectCountryWidget extends ConsumerWidget {
   const SelectCountryWidget({super.key});
@@ -20,12 +23,22 @@ class SelectCountryWidget extends ConsumerWidget {
         ? CountryDropdownItem.fromCountry(selectedCountry)
         : null;
 
+    final validationState = ref.watch(SelectedCountryValidator.provider);
+    final errorText = switch (validationState) {
+      SdgValidationStateError(error: final countryError) => switch (countryError) {
+        SdgValidationCommonError.empty => 'Select a country',
+        _ => null,
+      },
+      _ => null,
+    };
+
     return SdgDropdownButton<CountryDropdownItem>(
       items: dropdownItems,
       selectedItem: selectedDropdownItem,
       state: SdgDropdownState.fromSdgState(countriesState),
       errorButtonText: 'Reload',
       onErrorButtonPressed: () => _handleErrorButtonPressed(ref),
+      errorText: errorText,
       onItemSelected: (CountryDropdownItem? item) {
         _onItemSelected(item, ref);
       },
