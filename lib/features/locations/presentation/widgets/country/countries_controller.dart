@@ -25,9 +25,9 @@ class CountriesController extends AutoDisposeNotifier<SdgState<List<Country>>> {
     try {
       final countries = await repository.getCountries();
       state = SdgStateIdle(value: countries);
-    } on Exception catch (e, stacktrace) {
+    } catch (e, stacktrace) {
       log('Loading countries failured', stackTrace: stacktrace);
-      state = SdgStateError(error: e, value: state.value);
+      state = SdgStateError(error: Exception(e), value: state.value);
     }
   }
 }
