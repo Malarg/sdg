@@ -1,6 +1,11 @@
 sealed class SdgValidationState<T> {
   const SdgValidationState();
 
+  T? get error => switch (this) {
+    SdgValidationStateError(:final error) => error,
+    _ => null,
+  };
+
   bool get isValid => this is SdgValidationStateSuccess;
   bool get isError => this is SdgValidationStateError;
   bool get isIdle => this is SdgValidationStateIdle;
@@ -20,6 +25,7 @@ class SdgValidationStateSuccess<T> extends SdgValidationState<T> {
 }
 
 class SdgValidationStateError<T> extends SdgValidationState<T> {
+  @override
   final T error;
 
   const SdgValidationStateError({required this.error});

@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sdg/features/common/presentation/validation/sdg_validation_common_error.dart';
 import 'package:sdg/features/common/presentation/validation/sdg_validation_state.dart';
-import 'package:sdg/features/locations/presentation/screens/locations/locations_screen_validator.dart';
+import 'package:sdg/features/locations/presentation/screens/locations/location_screen_validator.dart';
 import 'package:sdg/features/locations/presentation/widgets/country_states/select_country_state_widget.dart';
 import 'package:sdg/features/locations/presentation/widgets/country/select_country_widget.dart';
 
-class LocationsScreen extends ConsumerWidget {
-  const LocationsScreen({super.key});
+class LocationScreen extends ConsumerWidget {
+  const LocationScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(LocationsScreenValidator.provider, (previous, next) {
+    ref.listen(LocationScreenValidator.provider, (previous, next) {
       if (next is SdgValidationStateError) {
         final text = switch ((next as SdgValidationStateError).error) {
           SdgValidationCommonError.invalid => 'Fix errors first',
@@ -50,7 +50,7 @@ class LocationsScreen extends ConsumerWidget {
               ElevatedButton(
                 onPressed: () {
                   ref
-                      .read(LocationsScreenValidator.provider.notifier)
+                      .read(LocationScreenValidator.provider.notifier)
                       .validate(value: null);
                 },
                 child: Text('Continue'),

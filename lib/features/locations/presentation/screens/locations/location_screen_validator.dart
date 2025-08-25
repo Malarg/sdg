@@ -9,11 +9,11 @@ import 'package:sdg/features/locations/presentation/widgets/country/selected_cou
 
 final _provider =
     NotifierProvider.autoDispose<
-      LocationsScreenValidator,
+      LocationScreenValidator,
       SdgValidationState<SdgValidationCommonError>
-    >(LocationsScreenValidator.new);
+    >(LocationScreenValidator.new);
 
-class LocationsScreenValidator
+class LocationScreenValidator
     extends SdgValidator<Object, SdgValidationCommonError> {
   static final provider = _provider;
 

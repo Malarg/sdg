@@ -95,9 +95,8 @@ features/locations/
 7. **UI** rebuilds → Based on state changes (Consumer widgets)
 
 Unfortunately I have not more time for this demo, so I'll describe here what should be done to make it more production-ready:
-1. Test coverage
+1. Crash notification system (e.g. Crashlytics) 
 2. Navigation
 3. Localisation
 4. Security (Env file for base url)
 5. Logging
-6. Crash notification system (e.g. Crashlytics) 
